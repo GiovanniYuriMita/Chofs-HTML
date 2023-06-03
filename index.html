@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Jogo de Educação Ambiental - Atibaia (Protótipo)</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #333;
+            color: #FFF;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .question {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .option {
+            width: 50%;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #FFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .option:hover {
+            background-color: #E0E0E0;
+        }
+
+        .option.selected {
+            background-color: #FF6347;
+            color: #FFF;
+        }
+
+        .option.correct {
+            background-color: #98FB98;
+            color: #FFF;
+        }
+
+        .option.wrong {
+            background-color: #FF6347;
+            color: #FFF;
+        }
+
+        .score {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .score span {
+            color: #FF6347;
+        }
+
+        .retry-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .retry-button button {
+            background-color: #8CC63F;
+            color: #FFF;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .retry-button button:hover {
+            background-color: #6B9A2C;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #FFF;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        Educação Ambiental: Atibaia Quiz -- Protótipo --
+    </div>
+
+    <div class="container">
+        <div class="question">
+            Qual é a maior reserva natural de Atibaia?
+        </div>
+        <div class="options">
+            <div class="option" onclick="answer(this)">A) Pedra Grande</div>
+            <div class="option" onclick="answer(this)">B) Parque das Águas</div>
+            <div class="option" onclick="answer(this)">C) Parque Municipal Edmundo Zanoni</div>
+            <div class="option" onclick="answer(this)">D) Jardim do Lago</div>
+        </div>
+
+        <div class="score">
+            Pontuação: <span id="score">0</span>
+        </div>
+
+        <div class="retry-button" id="retryButton" style="display: none;">
+            <button onclick="retry()">Tentar novamente</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        Protótipo de Educação Ambiental em Atibaia &copy; 2023 - Chofs
+    </div>
+
+    <script>
+        var score = 0;
+        var answered = false;
+        var retryButton = document.getElementById('retryButton');
+
+        function answer(selectedOption) {
+            if (!answered) {
+                var options = document.getElementsByClassName('option');
+
+                for (var i = 0; i < options.length; i++) {
+                    options[i].classList.remove('selected', 'correct', 'wrong');
+                    options[i].setAttribute('onclick', '');
+                }
+
+                selectedOption.classList.add('selected');
+
+                if (selectedOption.innerText === 'A) Pedra Grande') {
+                    selectedOption.classList.add('correct');
+                    score += 100;
+                } else {
+                    selectedOption.classList.add('wrong');
+                }
+
+                document.getElementById('score').textContent = score;
+                answered = true;
+                if (score === 0) {
+                    selectedOption.classList.remove('wrong');
+                    selectedOption.classList.remove('correct');
+                    selectedOption.classList.add('wrong-negative');
+                    retryButton.style.display = 'flex';
+                } else {
+                    retryButton.style.display = 'none';
+                }
+            }
+        }
+
+        function retry() {
+            var options = document.getElementsByClassName('option');
+
+            for (var i = 0; i < options.length; i++) {
+                options[i].classList.remove('correct', 'wrong', 'wrong-negative');
+                options[i].setAttribute('onclick', 'answer(this)');
+            }
+
+            answered = false;
+            retryButton.style.display = 'none';
+            score = 0;
+            document.getElementById('score').textContent = score;
+        }
+    </script>
+</body>
+
+</html>
