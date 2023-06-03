@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+
+body {
+  font-family: 'Press Start 2P', sans-serif;
+  background-color: #181818;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #ffd700;
+  font-size: 36px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#tabuleiro {
+  background-color: #333;
+  border: 1px solid #777;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#perguntas {
+  background-color: #555;
+  border: 1px solid #999;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#recursos {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#interacao {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ffd700;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ffc800;
+}
+
+#eventos {
+  background-color: #555;
+  border: 1px solid #999;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#interacao-social {
+  text-align: center;
+  margin-bottom: 20px;
+}
+

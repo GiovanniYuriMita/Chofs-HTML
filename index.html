@@ -5,16 +5,18 @@
     <title>Jogo de Educação Ambiental - Atibaia (Protótipo)</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Press Start 2P', Arial, sans-serif;
             background-color: #F5F5F5;
             margin: 0;
             padding: 0;
         }
 
         .header {
-            background-color: #333;
-            color: #FFF;
+            background-color: #F5F5F5;
+            color: #212121;
             padding: 20px;
             text-align: center;
             font-size: 24px;
@@ -24,7 +26,7 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #FFF;
+            background-color: #FFFFFF;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -34,6 +36,8 @@
             font-weight: bold;
             text-align: center;
             margin-bottom: 10px;
+            animation: fade-in 0.5s ease;
+            color: #212121;
         }
 
         .options {
@@ -45,7 +49,7 @@
             width: 50%;
             padding: 10px;
             cursor: pointer;
-            background-color: #FFF;
+            background-color: #FFFFFF;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             margin-bottom: 10px;
@@ -54,25 +58,30 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            animation: fade-in 0.5s ease;
+            color: #212121;
         }
 
         .option:hover {
-            background-color: #E0E0E0;
+            background-color: #F1F1F1;
         }
 
         .option.selected {
-            background-color: #FF6347;
-            color: #FFF;
+            background-color: #FFD700;
+            color: #FFFFFF;
+            animation: shake 0.4s;
+            animation-iteration-count: infinite;
         }
 
         .option.correct {
             background-color: #98FB98;
-            color: #FFF;
+            color: #FFFFFF;
+            animation: pulse 0.5s infinite;
         }
 
         .option.wrong {
             background-color: #FF6347;
-            color: #FFF;
+            color: #FFFFFF;
         }
 
         .score {
@@ -80,6 +89,7 @@
             text-align: center;
             font-size: 16px;
             font-weight: bold;
+            color: #212121;
         }
 
         .score span {
@@ -93,8 +103,8 @@
         }
 
         .retry-button button {
-            background-color: #8CC63F;
-            color: #FFF;
+            background-color: #FFD700;
+            color: #FFFFFF;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
@@ -103,15 +113,122 @@
         }
 
         .retry-button button:hover {
-            background-color: #6B9A2C;
+            background-color: #FFB400;
         }
 
         .footer {
-            background-color: #333;
-            color: #FFF;
+            background-color: #F5F5F5;
+            color: #212121;
             padding: 10px;
             text-align: center;
             font-size: 14px;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .dark-mode {
+            background-color: #212121 !important;
+            color: #FFD700 !important;
+        }
+
+        .dark-mode .header {
+            background-color: #212121;
+            color: #FFD700;
+        }
+
+        .dark-mode .container {
+            background-color: #1E1E1E;
+            color: #FFD700;
+        }
+
+        .dark-mode .question {
+            color: #FFD700;
+        }
+
+        .dark-mode .options {
+            background-color: #1E1E1E;
+        }
+
+        .dark-mode .option {
+            background-color: #1E1E1E;
+            color: #FFD700;
+        }
+
+        .dark-mode .option:hover {
+            background-color: #383838;
+        }
+
+        .dark-mode .option.selected {
+            background-color: #FF6347;
+            color: #FFF;
+        }
+
+        .dark-mode .option.correct {
+            background-color: #98FB98;
+            color: #FFF;
+        }
+
+        .dark-mode .option.wrong {
+            background-color: #FF6347;
+            color: #FFF;
+        }
+
+        .dark-mode .score {
+            color: #FFD700;
+        }
+
+        .dark-mode .retry-button button {
+            background-color: #FFD700;
+            color: #1E1E1E;
+        }
+
+        .dark-mode .footer {
+            background-color: #212121;
+            color: #FFD700;
         }
     </style>
 </head>
@@ -126,10 +243,10 @@
             Qual é a maior reserva natural de Atibaia?
         </div>
         <div class="options">
-            <div class="option" onclick="answer(this)">A) Pedra Grande</div>
-            <div class="option" onclick="answer(this)">B) Parque das Águas</div>
-            <div class="option" onclick="answer(this)">C) Parque Municipal Edmundo Zanoni</div>
-            <div class="option" onclick="answer(this)">D) Jardim do Lago</div>
+            <div class="option" onclick="answer(this)">Pedra Grande</div>
+            <div class="option" onclick="answer(this)">Parque das Águas</div>
+            <div class="option" onclick="answer(this)">Parque Municipal Edmundo Zanoni</div>
+            <div class="option" onclick="answer(this)">Jardim do Lago</div>
         </div>
 
         <div class="score">
@@ -161,11 +278,16 @@
 
                 selectedOption.classList.add('selected');
 
-                if (selectedOption.innerText === 'A) Pedra Grande') {
+                if (selectedOption.innerText === 'Pedra Grande') {
                     selectedOption.classList.add('correct');
                     score += 100;
                 } else {
                     selectedOption.classList.add('wrong');
+                    // Add a shake animation to the wrong option
+                    selectedOption.style.animation = 'shake 0.4s';
+                    setTimeout(function () {
+                        selectedOption.style.animation = '';
+                    }, 400);
                 }
 
                 document.getElementById('score').textContent = score;
@@ -194,7 +316,15 @@
             score = 0;
             document.getElementById('score').textContent = score;
         }
+
+        function toggleDarkMode() {
+            var body = document.body;
+            body.classList.toggle('dark-mode');
+        }
     </script>
+    <button onclick="toggleDarkMode()" style="position: fixed; bottom: 20px; right: 20px;">
+        <img src="file:///C:/Users/giova/OneDrive/Documentos/GitHub/HTML%20Chofs/HTML-Chofs/Chofs-HTML/Styles/dark-theme-svgrepo-com.svg" alt="Dark Mode" width="24" height="24">
+    </button>
 </body>
 
 </html>
