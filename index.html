@@ -2,8 +2,11 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>Jogo de Educação Ambiental - Atibaia (Protótipo)</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -43,9 +46,11 @@
         .options {
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
         }
 
         .option {
+            width: calc(50% - 15px);
             width: 50%;
             padding: 10px;
             cursor: pointer;
@@ -67,7 +72,7 @@
         }
 
         .option.selected {
-            background-color: #FFD700;
+            background-color: #FF6347;
             color: #FFFFFF;
             animation: shake 0.4s;
             animation-iteration-count: infinite;
@@ -94,6 +99,7 @@
 
         .score span {
             color: #FF6347;
+            transition: color 0.3s ease;
         }
 
         .retry-button {
@@ -110,6 +116,8 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .retry-button button:hover {
@@ -230,6 +238,30 @@
             background-color: #212121;
             color: #FFD700;
         }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .menu-button {
+            margin: 10px;
+            background-color: #FFD700;
+            color: #212121;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 2px 4 px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-button:hover {
+            background-color: #FFB400;
+        }
     </style>
 </head>
 
@@ -238,16 +270,13 @@
         Educação Ambiental: Atibaia Quiz -- Protótipo --
     </div>
 
-    <div class="container">
-        <div class="question">
-            Qual é a maior reserva natural de Atibaia?
-        </div>
-        <div class="options">
-            <div class="option" onclick="answer(this)">Pedra Grande</div>
-            <div class="option" onclick="answer(this)">Parque das Águas</div>
-            <div class="option" onclick="answer(this)">Parque Municipal Edmundo Zanoni</div>
-            <div class="option" onclick="answer(this)">Jardim do Lago</div>
-        </div>
+    <div class="container menu">
+        <button class="menu-button" onclick="startGame()">Iniciar Jogo</button>
+    </div>
+
+    <div class="container" id="gameContainer" style="display: none;">
+        <div class="question"></div>
+        <div class="options"></div>
 
         <div class="score">
             Pontuação: <span id="score">0</span>
@@ -266,6 +295,73 @@
         var score = 0;
         var answered = false;
         var retryButton = document.getElementById('retryButton');
+        var gameContainer = document.getElementById('gameContainer');
+        var menuContainer = document.getElementsByClassName('menu')[0];
+
+        var questions = [
+            {
+                question: "Qual é a maior reserva natural de Atibaia?",
+                options: ["Pedra Grande", "Parque das Águas", "Parque Municipal Edmundo Zanoni", "Jardim do Lago"],
+                answer: "Pedra Grande",
+                optionIndices: [0, 1, 2, 3] // Array of option indices
+            },
+            {
+                question: "Quantas nascentes o Parque das Águas possui?",
+                options: ["7 nascentes", "12 nascentes", "15 nascentes", "20 nascentes"],
+                answer: "7 nascentes",
+                optionIndices: [0, 1, 2, 3] // Array of option indices
+            },
+            {
+                question: "Em que ano foi inaugurado o Parque Municipal Edmundo Zanoni?",
+                options: ["1990", "1995", "2000", "2005"],
+                answer: "1990",
+                optionIndices: [0, 1, 2, 3] // Array of option indices
+            },
+            {
+                question: "Qual parque em Atibaia é conhecido por possuir um lago com pedalinhos?",
+                options: ["Parque das Águas", "Parque das Cerejeiras", "Parque da Grota Funda", "Parque Edmundo Zanoni"],
+                answer: "Parque Edmundo Zanoni",
+                optionIndices: [0, 1, 2, 3] // Array of option indices
+            }
+        ];
+
+
+        function startGame() {
+            menuContainer.style.display = 'none';
+            gameContainer.style.display = 'block';
+            showQuestion(0);
+        }
+
+        function showQuestion(index) {
+            var questionElement = document.getElementsByClassName('question')[0];
+            var optionsElement = document.getElementsByClassName('options')[0];
+            questionElement.textContent = questions[index].question;
+
+            while (optionsElement.firstChild) {
+                optionsElement.removeChild(optionsElement.firstChild);
+            }
+
+            var optionIndices = questions[index].optionIndices.slice(); // Create a copy of the optionIndices array
+            shuffleArray(optionIndices); // Shuffle the copy
+
+            for (var i = 0; i < optionIndices.length; i++) {
+                var optionIndex = optionIndices[i];
+                var option = document.createElement('div');
+                option.className = 'option';
+                option.textContent = questions[index].options[optionIndex];
+                option.setAttribute('onclick', 'answer(this)');
+                optionsElement.appendChild(option);
+            }
+        }
+
+        function shuffleArray(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
 
         function answer(selectedOption) {
             if (!answered) {
@@ -278,7 +374,7 @@
 
                 selectedOption.classList.add('selected');
 
-                if (selectedOption.innerText === 'Pedra Grande') {
+                if (selectedOption.innerText === questions[score / 100].answer) {
                     selectedOption.classList.add('correct');
                     score += 100;
                 } else {
@@ -299,31 +395,56 @@
                     retryButton.style.display = 'flex';
                 } else {
                     retryButton.style.display = 'none';
+                    setTimeout(function () {
+                        if (score === questions.length * 100) {
+                            endGame();
+                        } else {
+                            showQuestion(score / 100);
+                            answered = false;
+                        }
+                    }, 1000);
                 }
             }
         }
 
         function retry() {
+            score = 0;
+            document.getElementById('score').textContent = score;
+            answered = false;
             var options = document.getElementsByClassName('option');
 
             for (var i = 0; i < options.length; i++) {
-                options[i].classList.remove('correct', 'wrong', 'wrong-negative');
-                options[i].setAttribute('onclick', 'answer(this)');
+                options[i].classList.remove('selected', 'correct', 'wrong');
+                options[i].setAttribute('onclick', '');
+                options[i].style.animation = '';
             }
 
-            answered = false;
             retryButton.style.display = 'none';
-            score = 0;
-            document.getElementById('score').textContent = score;
+            showQuestion(0);
+        }
+
+
+        function endGame() {
+            var questionElement = document.getElementsByClassName('question')[0];
+            var optionsElement = document.getElementsByClassName('options')[0];
+
+            questionElement.textContent = 'Parabéns! Você concluiu o jogo.';
+            optionsElement.style.display = 'none';
+            retryButton.style.display = 'flex';
+            retryButton.innerHTML = '<button onclick="restart()">Reiniciar</button>';
         }
 
         function toggleDarkMode() {
-            var body = document.body;
+            var body = document.getElementsByTagName('body')[0];
             body.classList.toggle('dark-mode');
+        }
+
+        function restart() {
+            location.reload();
         }
     </script>
     <button onclick="toggleDarkMode()" style="position: fixed; bottom: 20px; right: 20px;">
-        <img src="C:\Users\giova\OneDrive\Documentos\GitHub\HTML Chofs\HTML-Chofs\Chofs-HTML\Styles\dark-theme-svgrepo-com.svg" alt="Dark Mode" width="24" height="24">
+        <img src="Styles\dark-theme-svgrepo-com.svg" alt="Dark Mode" width="24" height="24">
     </button>
 </body>
 
